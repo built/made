@@ -13,31 +13,58 @@
         width: 500px;
         padding: 10px;
     }
+    
+    .headline {
+        text-align: center;
+    }
+    
 	</style>
 	<script>
+	var chunks = new Array("chunk0", "chunk1", "chunk2");
+
 	function update_position(){
-        var location_chunk1 = "Chunk 1: (" + $('#chunk1').offset().top +  ", " + $('#chunk1').offset().left + ")";
-        var location_chunk2 = "Chunk 2: (" + $('#chunk2').offset().top +  ", " + $('#chunk2').offset().left + ")";
-        $('#report').text(location_chunk1 + "\n" + location_chunk2 + "\n");
+	    var template = "CHUNK: (TOP, LEFT)\n";
+	    var text = '';
+        var chunk_container;
+
+        for (var i = 0; i < chunks.length; i++)
+	    {
+	        var position = $('#' + chunks[i]).offset();
+	        var temp = template;
+	        text += temp.replace('CHUNK', chunks[i]).replace('TOP', position.top).replace('LEFT', position.left);
+        }
+
+        $('#report').text(text);
     }
 	$(function(){
-        $('#chunk1').draggable();
-        $('#chunk1').width($('#frame_chunk1').width());
-        $('#chunk2').draggable();
 
-        $('#chunk1').bind("drag", update_position);
-        $('#chunk2').bind("drag", update_position);
+        for (var i = 0; i < chunks.length; i++)
+	    {
+	        var chunk = $('#' + chunks[i]);
+	        console.log("Making " + chunks[i] + " draggable.");
+	        chunk.draggable();
+            
+	        var chunk_frame = $('#' + chunks[i] + ' iframe');
+            if(chunk_frame) {
+                chunk.width(chunk_frame.width());
+            }
+            $(chunk).bind("drag", update_position);
+	    }
     })
     </script>
 </head>
 <body>
-<div id="chunk1" class="dev chunk_container">
-    <iframe id="frame_chunk1" src="blogpost.html"></iframe>
-</div>
+    <div id="chunk0" class="dev chunk_container">
+        <h1 class="headline">Make A Difference Engine</h1>
+    </div>
+    
+    <div id="chunk1" class="dev chunk_container">
+        <iframe id="frame_chunk1" src="blogpost.html"></iframe>
+    </div>
 
-<div id="chunk2" class="dev chunk_container">
-    <iframe id="frame_chunk2" src="anne-hathaway-1600x1200-004.jpg"></iframe>
-</div>
+    <div id="chunk2" class="dev chunk_container">
+        <iframe id="frame_chunk2" src="anne-hathaway-1600x1200-004.jpg"></iframe>
+    </div>
 
 <textarea id="report">
 </textarea>
