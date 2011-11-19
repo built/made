@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Make A Difference Engine</title>
+    <link rel="stylesheet" href="blueprint/screen.css" type="text/css" media="screen, projection">
 	<script src="jquery-1.7.min.js"></script>
 	<script type="text/javascript" src="jquery-ui/js/jquery-ui-1.8.16.custom.min.js"></script>
 	<style>
@@ -42,7 +43,7 @@
 	    {
 	        var chunk = $('#' + chunks[i]);
 	        console.log("Making " + chunks[i] + " draggable.");
-	        chunk.draggable();
+	        chunk.draggable({ grid: [40, 20] });
             
 	        var chunk_frame = $('#' + chunks[i] + ' iframe');
             if(chunk_frame) {
@@ -53,7 +54,7 @@
     })
     </script>
 </head>
-<body>
+<body class="showgrid">
     <div id="chunk0" class="dev chunk_container">
         <h1 class="headline">Make A Difference Engine</h1>
     </div>
