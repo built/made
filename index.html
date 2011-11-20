@@ -5,6 +5,7 @@
 	<title>Make A Difference Engine</title>
     <link rel="stylesheet" href="blueprint/screen.css" type="text/css" media="screen, projection">
 	<script src="jquery-1.7.min.js"></script>
+	<script src="js/underscore.js"></script>
 	<script type="text/javascript" src="jquery-ui/js/jquery-ui-1.8.16.custom.min.js"></script>
 	<style>
 	.dev {
@@ -14,57 +15,56 @@
         width: 500px;
         padding: 10px;
     }
-    
+
     .headline {
         text-align: center;
     }
-    
+
 	</style>
 	<script>
-	var chunks = new Array("chunk0", "chunk1", "chunk2");
-
-	function update_position(){
-	    var template = "CHUNK: (TOP, LEFT)\n";
-	    var text = '';
-        var chunk_container;
-
-        for (var i = 0; i < chunks.length; i++)
-	    {
-	        var position = $('#' + chunks[i]).offset();
-	        var temp = template;
-	        text += temp.replace('CHUNK', chunks[i]).replace('TOP', position.top).replace('LEFT', position.left);
-        }
-
-        $('#report').text(text);
+    function chunks() {
+        return $('.chunk_container');
     }
-	$(function(){
 
-        for (var i = 0; i < chunks.length; i++)
-	    {
-	        var chunk = $('#' + chunks[i]);
-	        console.log("Making " + chunks[i] + " draggable.");
-	        chunk.draggable({ grid: [40, 20] });
-            
-	        var chunk_frame = $('#' + chunks[i] + ' iframe');
-            if(chunk_frame) {
-                chunk.width(chunk_frame.width());
-            }
-            $(chunk).bind("drag", update_position);
-	    }
-    })
+    function chunk_report(report, chunk)
+    {
+        report[chunk.id] = $(chunk).offset();
+        return report;
+    }
+
+    function update_position() {
+        $('#report').text( JSON.stringify(_.reduce(chunks(), chunk_report, {})) );
+    }
+
+    function initialize_chunk(chunk) {
+        chunk.draggable({ grid: [40, 20] });
+        $(chunk).bind("drag", update_position);
+    }
+
+    $(function() {
+        // _.map(find_chunks(), initialize_chunk);
+        chunks().draggable({ grid: [40, 20] });
+        chunks().bind("drag", update_position);
+    });
     </script>
 </head>
 <body class="showgrid">
     <div id="chunk0" class="dev chunk_container">
         <h1 class="headline">Make A Difference Engine</h1>
     </div>
-    
+
     <div id="chunk1" class="dev chunk_container">
-        <iframe id="frame_chunk1" src="blogpost.html"></iframe>
+        <p>I really think something about something. Lately I've been wondering how I feel about the thing that I used to think a lot about. I haven't thought about it in quite sometime. 
+        I am not sure if that is indicative of a problem or just a clear sign that I'm normal.</p>
+        <p>In any case, it should be noted that I'm writing this because I need some text to fill up a widget that is going to be on the screen.
+            If this had been an actual blog the content you are viewing would have been meaningful and - if I can brag a little - it would BLOW YOUR FRIGGIN MIND.
+        </p>
+        <p>Sadly, this isn't a real post. So we'll have to do what we need to do in order to make this look like a real thing. That is to say, not look like shit.
+        </p>
     </div>
 
     <div id="chunk2" class="dev chunk_container">
-        <iframe id="frame_chunk2" src="anne-hathaway-1600x1200-004.jpg"></iframe>
+        <img src="anne-hathaway-1600x1200-004.jpg" width="100%"/>
     </div>
 
 <textarea id="report">
