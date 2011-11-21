@@ -8,6 +8,11 @@
 	<script src="js/underscore.js"></script>
 	<script type="text/javascript" src="jquery-ui/js/jquery-ui-1.8.16.custom.min.js"></script>
 	<style>
+	.toolbar {
+	    padding-left: 40px;
+        background-color: #eee;
+        color: #777;
+    }
 	.dev {
 	    border: 1px #aaa dotted;
     }
@@ -36,25 +41,28 @@
         $('#report').text( JSON.stringify(_.reduce(chunks(), chunk_report, {})) );
     }
 
-    function initialize_chunk(chunk) {
-        chunk.draggable({ grid: [40, 20] });
-        $(chunk).bind("drag", update_position);
+    function allow_editing(chunks) {
+        chunks.draggable({ grid: [40, 20] });
+        chunks.bind("drag", update_position);
     }
 
     $(function() {
-        // _.map(find_chunks(), initialize_chunk);
-        chunks().draggable({ grid: [40, 20] });
-        chunks().bind("drag", update_position);
+        allow_editing(chunks());
+
+        $("#page_lock").click(function() {
+            chunks().draggable( "option", "disabled", $("#chkLock").is(':checked') );
+        });
     });
     </script>
 </head>
 <body class="showgrid">
+    <div class="toolbar"><span id="page_lock"><input type="checkbox" id="chkLock"/> Page Locked</span></div>
     <div id="chunk0" class="dev chunk_container">
         <h1 class="headline">Make A Difference Engine</h1>
     </div>
 
     <div id="chunk1" class="dev chunk_container">
-        <p>I really think something about something. Lately I've been wondering how I feel about the thing that I used to think a lot about. I haven't thought about it in quite sometime. 
+        <p>I really think something about something. Lately I've been wondering how I feel about the thing that I used to think a lot about. I haven't thought about it in quite sometime.
         I am not sure if that is indicative of a problem or just a clear sign that I'm normal.</p>
         <p>In any case, it should be noted that I'm writing this because I need some text to fill up a widget that is going to be on the screen.
             If this had been an actual blog the content you are viewing would have been meaningful and - if I can brag a little - it would BLOW YOUR FRIGGIN MIND.
@@ -66,6 +74,7 @@
     <div id="chunk2" class="dev chunk_container">
         <img src="anne-hathaway-1600x1200-004.jpg" width="100%"/>
     </div>
+
 
 <textarea id="report">
 </textarea>
